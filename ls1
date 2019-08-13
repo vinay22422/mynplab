@@ -2,11 +2,13 @@ import time
 def fn():
     print('------------------------------------------')
 def fndiji(c,dist,path,visited,source,dest,n):
+    visited.clear(); dist.clear(); path.clear()
     for i in range(n):
-        visited[i] = 0
-        dist[i] = c[source][i]
-        path[i] = source
+        visited.append(int(0))
+        dist.append(c[source][i])
+        path.append(source)
     visited[source] = 1
+    #can make below to run from 0 also
     for i in range(1,n):
         min=INF
         a=-1
@@ -24,33 +26,38 @@ def fndiji(c,dist,path,visited,source,dest,n):
                 if (dist[a] + c[a][b] < dist[b]):
                     dist[b] = dist[a] + c[a][b]
                     path[b] = a
+
 MAXNODES = 10
 INF = 99
 #c=cost
-c = []
-dist=[INF,INF,INF,INF]; path=[-1,-1,-1,-1]; visited=[0,0,0,0]
-n = int(input('Enter the number of nodes:   '))
-print('Enter the Cost Matrix')
-for i in range(n):
-    c.append(list(map(int, input().split())))
-print('')
-for i in range(n):
-    for j in range(n):
-        if i!=j and c[i][j]!=99:
-            print('hello message sent from ', ' ', i, ' to ', j)
-            time.sleep(0.1)
-            print('echo message sent from:',' ', j, ' to ', i)
-for source in range(n):
-    print('//For Source Vertex :')
-    for destination in range(n):
-        fndiji(c,dist,path,visited,source,destination,n)
-        if dist[destination] >= INF:
-            print(" not reachable")
-        else:
-            i=destination
-            while True:
-                print(i,'<--',end='')
-                i=path[i]
-                if i==source:
-                    break
-            print(i,'=',dist[destination])
+if __name__=='__main__':
+    c = []
+    dist = []
+    path = []
+    visited = []
+    n = int(input('Enter the number of nodes:   '))
+    print('Enter the Cost Matrix')
+    for i in range(n):
+        c.append(list(map(int, input().split())))
+    print('')
+    for i in range(n):
+        for j in range(n):
+            if i != j and c[i][j] <= INF:
+                print('hello message sent from ', ' ', i, ' to ', j)
+                time.sleep(0.1)
+                fn()
+                print('echo message sent from:', ' ', j, ' to ', i)
+    for source in range(n):
+        print('//For Source Vertex :',source)
+        for destination in range(n):
+            fndiji(c, dist, path, visited, source, destination, n)
+            if dist[destination] >= INF:
+                print(" not reachable")
+            else:
+                i = destination
+                while True:
+                    print(i, '<--', end='')
+                    i = path[i]
+                    if i == source:
+                        break
+                print(i, '=', dist[destination])
